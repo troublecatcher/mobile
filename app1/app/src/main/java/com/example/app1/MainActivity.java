@@ -21,16 +21,14 @@ public class MainActivity extends AppCompatActivity {
     public void submit(View view){
         EditText etName = findViewById(R.id.etName);
         EditText etAge = findViewById(R.id.etAge);
+        RadioGroup rg = findViewById(R.id.rbSex);
+
         String name = etName.getText().toString();
         String age = etAge.getText().toString();
 
-        RadioGroup rg = findViewById(R.id.rbSex);
-
-
         if(name.equals("") || age.equals("") || rg.getCheckedRadioButtonId() == -1)
-        {
             Toast.makeText(this,"Введите все необходимые данные",Toast.LENGTH_SHORT).show();
-        }else {
+        else {
             int rbId = rg.getCheckedRadioButtonId();
             RadioButton rb = findViewById(rbId);
             String sex = rb.getText().toString();
