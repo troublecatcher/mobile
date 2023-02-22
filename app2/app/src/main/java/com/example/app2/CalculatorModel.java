@@ -89,10 +89,10 @@ public class CalculatorModel {
                     input.append(trim(first));
                     break;
                 case R.id.bNeg:
-                    if(first != 0)
-                        input.append(trim(-first));
-                    else{
+                    if(first == 0)
                         input.append(trim(first));
+                    else{
+                        input.append(trim(-first));
                         state = State.idle;
                     };
                     break;
@@ -140,7 +140,10 @@ public class CalculatorModel {
                     break;
                 case R.id.bNeg:
                     clearInput();
-                    input.append(trim(-second));
+                    if(second == 0)
+                        input.append(trim(second));
+                    else
+                        input.append(trim(-second));
                     break;
                 case R.id.bComma:
                     input.append((int)second + ".");
@@ -154,10 +157,6 @@ public class CalculatorModel {
             first = second = 0;
             state = State.idle;
         }
-    }
-
-    public void setZero(){
-        input.append(0);
     }
 
     public static String trim(Double d){
