@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Converter</string>
+    <string name="lang">english</string>
+    <string name="language">Language</string>
+    <string name="meters">meters</string>
+    <string name="kilometers">kilometers</string>
+    <string name="centimeters">centimeters</string>
+    <string name="feet">feet</string>
+    <string name="miles">miles</string>
+    <string name="inches">inches</string>
+</resources>

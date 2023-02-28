@@ -14,7 +14,7 @@ public class CalculatorModel {
 
     StringBuilder input = new StringBuilder();
     private int action;
-    private State state;
+    private State state = State.idle;
 
     private enum State{
         inputFirst,
@@ -23,7 +23,6 @@ public class CalculatorModel {
     }
 
     public CalculatorModel(){
-        state = State.idle;
         first = 0;
         input.append(trim(first));
     }
