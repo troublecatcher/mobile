@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        var list = listOf("RU", "EN")
         menu!!.add("RU")
         menu!!.add("EN")
         return super.onCreateOptionsMenu(menu)
