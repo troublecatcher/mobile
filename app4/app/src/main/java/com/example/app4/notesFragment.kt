@@ -33,10 +33,11 @@ class notesFragment : Fragment() {
         val dbmng = MyDbManager(requireContext())
         dbmng.openDb()
         val dataList = dbmng.readDbData()
+        val dataList2 = dbmng.readDbData2()
+        val dataList3 = dbmng.readDbData3()
         val notesList:ListView = binding.notesList
-        var aa = MyAdapter(requireContext(), dataList)
+        var aa = MyAdapter(requireContext(), dataList, dataList2, dataList3, -1)
         notesList.adapter = aa
-        dbmng.closeDb()
 
         binding.notesList.onItemClickListener = AdapterView.OnItemClickListener { p0, _, p2, _ ->
             val item = p0?.getItemAtPosition(p2)

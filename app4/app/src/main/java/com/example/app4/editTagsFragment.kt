@@ -5,33 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.Toast
 import com.example.app4.databinding.FragmentEditTagsBinding
-import com.example.app4.databinding.FragmentTagsBinding
 import db.MyDbManager
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [editTagsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class editTagsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+class editTagsFragment(private val chip: String, private val mode: String, private val index: Int, private  val last: Boolean) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,21 +18,46 @@ class editTagsFragment : Fragment() {
     ): View? {
         val binding = FragmentEditTagsBinding.inflate(inflater)
 
+        val dbmng = MyDbManager(requireContext())
+
         binding.cancelTag.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
         }
 
         binding.saveTag.setOnClickListener {
-            val dbmng = MyDbManager(requireContext())
+            dbmng.openDb()
 
             var tag = ""
             tag = binding.tagName.text.toString()
-
             if(tag != ""){
-                dbmng.openDb()
-                dbmng.insertToDb2(tag)
+                when(mode){
+                    "create" -> {
+                        dbmng.insertToDb2(tag)
+                        Toast.makeText(requireActivity(), "Тег успешно создан", Toast.LENGTH_SHORT).show()
+                    }
+                    "edit" -> {
+                        dbmng.updateTag(index, tag)
+                        Toast.makeText(requireContext(), "Тег успешно изменен", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
             }
-            Toast.makeText(requireActivity(), "Тег '$tag' успешно создан", Toast.LENGTH_SHORT).show()
+        }
+
+        if(chip != ""){
+            binding.tagName.setText(chip)
+        }
+        dbmng.openDb()
+        val dataList = dbmng.readDbData()
+        val dataList2 = dbmng.readDbData2()
+        val dataList3 = dbmng.readDbData3()
+        val notesList: ListView = binding.lvNotes
+        var aa = MyAdapter(requireContext(), dataList, dataList2, dataList3, index)
+        notesList.adapter = aa
+
+        binding.delTag.setOnClickListener {
+            dbmng.deleteTag(index, last)
+            Toast.makeText(requireContext(), "Тег успешно удален", Toast.LENGTH_SHORT).show()
             parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
         }
 
@@ -62,6 +66,6 @@ class editTagsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = editTagsFragment()
+        fun newInstance(chip: String, mode: String, index: Int, last: Boolean) = editTagsFragment(chip, mode, index, last)
     }
 }

@@ -78,8 +78,9 @@
                             android:orientation="vertical">
 
                             <ListView
+                                android:id="@+id/lvNotes"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="524dp" />
                         </LinearLayout>
                     </ScrollView>
 
