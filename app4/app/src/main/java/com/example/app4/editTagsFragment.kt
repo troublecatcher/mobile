@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import com.example.app4.databinding.FragmentEditTagsBinding
@@ -19,14 +20,13 @@ class editTagsFragment(private val chip: String, private val mode: String, priva
         val binding = FragmentEditTagsBinding.inflate(inflater)
 
         val dbmng = MyDbManager(requireContext())
+        dbmng.openDb()
 
         binding.cancelTag.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
         }
 
         binding.saveTag.setOnClickListener {
-            dbmng.openDb()
-
             var tag = ""
             tag = binding.tagName.text.toString()
             if(tag != ""){
@@ -42,6 +42,15 @@ class editTagsFragment(private val chip: String, private val mode: String, priva
                 }
                 parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
             }
+        }
+
+        val dl = dbmng.readDbData()
+        binding.lvNotes.onItemClickListener = AdapterView.OnItemClickListener { p0, _, p2, _ ->
+            val item = p0?.getItemAtPosition(p2)
+            val last = p0?.getItemAtPosition(dl.lastIndex)
+            parentFragmentManager.beginTransaction().
+            replace(R.id.notesPlaceholder,
+                newNoteFragment.newInstance(item.toString().toInt(), item == last, "edit")).commit()
         }
 
         if(chip != ""){

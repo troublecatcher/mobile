@@ -15,12 +15,15 @@ class MyAdapter(private val context: Context, private val arrayList: ArrayList<M
     private lateinit var title: TextView
     private lateinit var text: TextView
     private lateinit var tags: TextView
+    var resultList = arrayListOf<Int>()
     override fun getCount(): Int {
         if(tagIndex != -1){
             var size = 0
             for (item in arrayList3)
-                if(item.tags.toInt() == tagIndex+1)
+                if(item.tags.toInt() == tagIndex+1){
                     size++
+                    resultList.add(item.notes.toInt())
+                }
             return size
         }
         return arrayList.size
@@ -50,23 +53,17 @@ class MyAdapter(private val context: Context, private val arrayList: ArrayList<M
                     string += "${arrayList2[arrayList3[i].tags.toInt()-1]}, "
             tags.text = string.dropLast(2)
         }else{
-//            if(arrayList3[position].tags.toInt() == tagIndex+1){
-//                date.text = arrayList[arrayList3[position].notes.toInt()-1].date
-//                title.text = arrayList[arrayList3[position].notes.toInt()-1].title
-//                text.text = arrayList[arrayList3[position].notes.toInt()-1].text
-//                var string = "Теги: "
-//                for (i in 0 until arrayList3.count())
-//                    if(arrayList3[position].notes.toInt() == arrayList3[i].notes.toInt())
-//                        string += "${arrayList2[arrayList3[i].tags.toInt()-1]}, "
-//                tags.text = string.dropLast(2)
-//            }
-            val resultList = arrayListOf<MyData>()
-            if(arrayList3[position].tags.toInt() == tagIndex){
-                resultList.add(MyData(arrayList[position].date,
-                                      arrayList[position].title,
-                                      arrayList[position].text))
-            }
-            Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()
+            var index = resultList[position] - 1
+                date.text = arrayList[index].date
+                title.text = arrayList[index].title
+                text.text = arrayList[index].text
+                var string = "Теги: "
+                for (i in 0 until arrayList3.count())
+                    if(index + 1 == arrayList3[i].notes.toInt())
+                        string += "${arrayList2[arrayList3[i].tags.toInt()-1]}, "
+                tags.text = string.dropLast(2)
+
+//            Toast.makeText(context, "${resultList[position]}", Toast.LENGTH_SHORT).show()
         }
 
         return convertView
