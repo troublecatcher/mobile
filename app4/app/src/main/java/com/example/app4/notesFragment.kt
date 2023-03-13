@@ -27,7 +27,7 @@ class notesFragment : Fragment() {
         }
 
         binding.newNote.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, newNoteFragment.newInstance(-1, false, "create")).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, newNoteFragment.newInstance(-1, false, "create", "notes")).commit()
         }
 
         val dbmng = MyDbManager(requireContext())
@@ -44,7 +44,7 @@ class notesFragment : Fragment() {
             val last = p0?.getItemAtPosition(dataList.lastIndex)
             parentFragmentManager.beginTransaction().
             replace(R.id.notesPlaceholder,
-                newNoteFragment.newInstance(item.toString().toInt(), item == last, "edit")).commit()
+                newNoteFragment.newInstance(item.toString().toInt(), item == last, "edit", "notes")).commit()
         }
 
         return binding.root

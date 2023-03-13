@@ -62,7 +62,7 @@
                         android:ems="10" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/twNotesWithThisTag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Заметки с тегом" />
@@ -77,7 +77,7 @@
                             android:orientation="vertical">
 
                             <ListView
-                                android:id="@+id/lvNotes"
+                                android:id="@+id/lvNotesWithThisTag"
                                 android:layout_width="match_parent"
                                 android:layout_height="524dp" />
                         </LinearLayout>

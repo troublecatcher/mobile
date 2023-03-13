@@ -12,7 +12,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import db.MyDbManager
 
-class newNoteFragment(private val index: Int, private val last: Boolean, private val mode: String) : Fragment() {
+class newNoteFragment(private val index: Int, private val last: Boolean, private val mode: String, private val from: String) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,16 +56,30 @@ class newNoteFragment(private val index: Int, private val last: Boolean, private
                     }
                 }
                 parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
-            }
+            }else Toast.makeText(requireContext(), "Заполните все необходимые поля", Toast.LENGTH_SHORT).show()
         }
         binding.cancelNote.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+            when(from){
+                "notes" -> {
+                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+                }
+                "tags" -> {
+                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
+                }
+            }
         }
 
         binding.delNote.setOnClickListener {
             dbmng.deleteNote(index, last)
             Toast.makeText(requireContext(), "Заметка успешно удалена", Toast.LENGTH_SHORT).show()
-            parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+            when(from){
+                "notes" -> {
+                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+                }
+                "tags" -> {
+                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
+                }
+            }
         }
 
         dbmng.openDb()
@@ -105,6 +119,6 @@ class newNoteFragment(private val index: Int, private val last: Boolean, private
 
     companion object {
         @JvmStatic
-        fun newInstance(index: Int, last: Boolean, mode: String) = newNoteFragment(index, last, mode)
+        fun newInstance(index: Int, last: Boolean, mode: String, from: String) = newNoteFragment(index, last, mode, from)
     }
 }
