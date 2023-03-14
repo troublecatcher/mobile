@@ -10,6 +10,8 @@ import com.example.app4.databinding.FragmentCudNotesBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import db.DatabaseManager
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class NotesCUDFragment(private val pressedNoteIndex: Int, private val isLastNote: Boolean, private val mode: String, private val whereFrom: String) : Fragment() {
 
@@ -23,7 +25,7 @@ class NotesCUDFragment(private val pressedNoteIndex: Int, private val isLastNote
         var text: String
         val db = DatabaseManager(requireContext())
         db.openDb()
-        
+
         binding.saveNote.setOnClickListener {
             date = binding.noteDate.text.toString()
             title = binding.noteName.text.toString()
@@ -36,7 +38,7 @@ class NotesCUDFragment(private val pressedNoteIndex: Int, private val isLastNote
                     selectedTags.add(i)
                 }
             }
-            if(date != "" && title != "" && text != ""){
+            if(title != "" && text != ""){
                 when(mode){
                     "create" -> {
                         db.createNote(date, title, text)
@@ -89,6 +91,12 @@ class NotesCUDFragment(private val pressedNoteIndex: Int, private val isLastNote
         }
         val tags = db.readTags()
         val noteTagRelations = db.readNoteTagRelations()
+
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+        val current = LocalDateTime.now().format(formatter).toString()
+        binding.noteDate.setText(current)
+        binding.noteDate.isEnabled = false
+
         when(mode){
             "create" -> {
                 val chipGroup: ChipGroup = binding.cgTags
