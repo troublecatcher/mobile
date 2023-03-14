@@ -106,6 +106,7 @@ class NotesCUDFragment(private val pressedNoteIndex: Int, private val isLastNote
                     chip.isCheckable = true
                     chipGroup.addView(chip)
                 }
+                binding.delNote.visibility = View.GONE
             }
             "edit" -> {
                 val chipGroup: ChipGroup = binding.cgTags

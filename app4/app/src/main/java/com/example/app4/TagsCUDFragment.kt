@@ -64,7 +64,10 @@ class TagsCUDFragment(private val chipName: String, private val mode: String, pr
                 replace(R.id.fragmentsPlaceholder,
                     NotesCUDFragment.newInstance(neededNote.notes.toInt()-1, neededNote.notes == lastNoteIndex, "edit", "tags")).commit()
             }
-        }else binding.tvNotesWithThisTag.text = ""
+        }else{
+            binding.tvNotesWithThisTag.text = ""
+            binding.delTag.visibility = View.GONE
+        }
 
         binding.delTag.setOnClickListener {
             db.deleteTag(tagIndex, isLastTag)

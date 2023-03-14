@@ -16,7 +16,7 @@ object DatabaseNames:BaseColumns {
     const val column_note_tag_relations_tag = "tag"
 
 
-    const val database_version = 1
+    const val database_version = 2
     const val database_name = "app4.db"
 
     const val create_table_notes = "CREATE TABLE IF NOT EXISTS $table_notes (" +
