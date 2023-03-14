@@ -43,14 +43,15 @@ class TagsCUDFragment(private val chipName: String, private val mode: String, pr
         }
 
         if(mode == "edit"){
-            binding.tagName.setText(chipName)
+            if(chipName != ""){
+                binding.tagName.setText(chipName)
+            }
             db.openDb()
             val notes = db.readNotes()
             val tags = db.readTags()
             val noteTagRelations = db.readNoteTagRelations()
             val notesListView: ListView = binding.lvNotesWithThisTag
             notesListView.adapter = MyAdapter(requireContext(), notes, tags, noteTagRelations, tagIndex)
-            if(notesListView.count == 0) binding.tvNotesWithThisTag.text = "Заметок с этим тегом ещё нет"
 
             binding.lvNotesWithThisTag.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
                 val notesWithThisTag = arrayListOf<NoteTagRelationClass>()

@@ -93,13 +93,6 @@ class DatabaseManager (context: Context) {
         }
         db?.update(table_tags, values,"_id=$id+1",null)
     }
-    fun updateNoteTagRelation(note: Int, tag: Int){
-        val values = ContentValues().apply{
-            put(DatabaseNames.column_note_tag_relations_note, note)
-            put(DatabaseNames.column_note_tag_relations_tag, tag)
-        }
-        db?.update(table_note_tag_relations, values, "note=${note+1} AND tag=${tag+1}", null)
-    }
     fun deleteNote(id: Int, last: Boolean) {
         openDb()
         db?.delete(table_notes, "_id=${id+1}", null)
