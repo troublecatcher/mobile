@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".editTagsFragment">
+    tools:context=".TagsCUDFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                         android:ems="10" />
 
                     <TextView
-                        android:id="@+id/twNotesWithThisTag"
+                        android:id="@+id/tv_notes_with_this_tag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Заметки с тегом" />

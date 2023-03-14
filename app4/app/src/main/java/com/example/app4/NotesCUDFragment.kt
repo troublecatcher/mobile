@@ -6,119 +6,117 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.iterator
-import com.example.app4.databinding.FragmentEditNotesBinding
+import com.example.app4.databinding.FragmentCudNotesBinding
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import db.MyDbManager
+import db.DatabaseManager
 
-class newNoteFragment(private val index: Int, private val last: Boolean, private val mode: String, private val from: String) : Fragment() {
+class NotesCUDFragment(private val pressedNoteIndex: Int, private val isLastNote: Boolean, private val mode: String, private val whereFrom: String) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        val binding = FragmentEditNotesBinding.inflate(inflater)
+        val binding = FragmentCudNotesBinding.inflate(inflater)
 
-        var date = ""
-        var title = ""
-        var text = ""
-        val dbmng = MyDbManager(requireContext())
+        var date: String
+        var title: String
+        var text: String
+        val db = DatabaseManager(requireContext())
+        db.openDb()
+        
         binding.saveNote.setOnClickListener {
             date = binding.noteDate.text.toString()
             title = binding.noteName.text.toString()
             text = binding.noteText.text.toString()
-            var tags = arrayListOf<Int>()
+            var selectedTags = arrayListOf<Int>()
             val chipGroup: ChipGroup = binding.cgTags
             for (i in 0 until chipGroup.childCount){
                 val chip = chipGroup.getChildAt(i) as Chip
                 if (chip.isChecked){
-                    tags.add(i)
+                    selectedTags.add(i)
                 }
             }
             if(date != "" && title != "" && text != ""){
-//                Toast.makeText(requireContext(), "$tags", Toast.LENGTH_SHORT).show()
-                dbmng.openDb()
                 when(mode){
                     "create" -> {
-                        dbmng.insertToDb(date, title, text)
+                        db.createNote(date, title, text)
                         Toast.makeText(requireContext(), "Заметка успешно создана", Toast.LENGTH_SHORT).show()
-                        if(tags.isNotEmpty()){
-                            val dataList = dbmng.readDbData()
-                            val idx = dataList.indexOf(dataList.last()) + 1
-                            for(tag in tags){
-                                dbmng.insertToDb3(idx.toString(), (tag + 1).toString())
+                        if(selectedTags.isNotEmpty()){
+                            val notes = db.readNotes()
+                            val lastNoteIndex = notes.indexOf(notes.last()) + 1
+                            for(tag in selectedTags){
+                                db.createNoteTagRelation(lastNoteIndex.toString(), (tag + 1).toString())
                             }
                         }
                     }
                     "edit" -> {
-                        dbmng.updateNote(index, date, title, text)
+                        db.updateNote(pressedNoteIndex, date, title, text)
                         Toast.makeText(requireContext(), "Заметка успешно изменена", Toast.LENGTH_SHORT).show()
                     }
                 }
-                parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+                
+                parentFragmentManager.beginTransaction().replace(R.id.fragmentsPlaceholder, NotesFragment.newInstance()).commit()
             }else Toast.makeText(requireContext(), "Заполните все необходимые поля", Toast.LENGTH_SHORT).show()
         }
         binding.cancelNote.setOnClickListener {
-            when(from){
+            when(whereFrom){
                 "notes" -> {
-                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.fragmentsPlaceholder, NotesFragment.newInstance()).commit()
                 }
                 "tags" -> {
-                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.fragmentsPlaceholder, TagsFragment.newInstance()).commit()
                 }
             }
         }
 
         binding.delNote.setOnClickListener {
-            dbmng.deleteNote(index, last)
+            db.deleteNote(pressedNoteIndex, isLastNote)
             Toast.makeText(requireContext(), "Заметка успешно удалена", Toast.LENGTH_SHORT).show()
-            when(from){
+            when(whereFrom){
                 "notes" -> {
-                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, notesFragment.newInstance()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.fragmentsPlaceholder, NotesFragment.newInstance()).commit()
                 }
                 "tags" -> {
-                    parentFragmentManager.beginTransaction().replace(R.id.notesPlaceholder, tagsFragment.newInstance()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.fragmentsPlaceholder, TagsFragment.newInstance()).commit()
                 }
             }
         }
-
-        dbmng.openDb()
-        if(index != -1){
-            val dataList = dbmng.readDbData()
-            binding.noteDate.setText(dataList[index].date)
-            binding.noteName.setText(dataList[index].title)
-            binding.noteText.setText(dataList[index].text)
+        if(pressedNoteIndex != -1){
+            val notes = db.readNotes()
+            binding.noteDate.setText(notes[pressedNoteIndex].date)
+            binding.noteName.setText(notes[pressedNoteIndex].title)
+            binding.noteText.setText(notes[pressedNoteIndex].text)
         }
-        val dataList2 = dbmng.readDbData2()
-        val dataList3 = dbmng.readDbData3()
+        val tags = db.readTags()
+        val noteTagRelations = db.readNoteTagRelations()
         when(mode){
             "create" -> {
                 val chipGroup: ChipGroup = binding.cgTags
-                for (item in dataList2){
+                for (tag in tags){
                     val chip = Chip(requireContext())
-                    chip.text = item
+                    chip.text = tag
                     chip.isCheckable = true
                     chipGroup.addView(chip)
                 }
             }
             "edit" -> {
                 val chipGroup: ChipGroup = binding.cgTags
-                for(item in dataList3){
-                    if(item.notes.toInt() == index+1){
+                for(noteTagRelation in noteTagRelations){
+                    if(noteTagRelation.notes.toInt() == pressedNoteIndex+1){
                         val chip = Chip(requireContext())
-                        chip.text = dataList2[item.tags.toInt()-1]
+                        chip.text = tags[noteTagRelation.tags.toInt()-1]
                         chip.isChecked = true
                         chipGroup.addView(chip)
                     }
                 }
             }
         }
-
+        
         return binding.root
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(index: Int, last: Boolean, mode: String, from: String) = newNoteFragment(index, last, mode, from)
+        fun newInstance(index: Int, last: Boolean, mode: String, from: String) = NotesCUDFragment(index, last, mode, from)
     }
 }
