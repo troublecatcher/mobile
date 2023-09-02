@@ -1,4 +1,5 @@
-5 Android and 2 Flutter apps as an introduction to mobile dev
+# 5 Android and 2 Flutter apps as an introduction to mobile dev
+
 # App 1 – Basic layout and data processing
 #### Passing data between activities and changing background image
 
