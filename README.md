@@ -1,23 +1,23 @@
 # 5 Android and 2 Flutter apps as an introduction to mobile dev
 
-# App 1 – Basic layout and data processing
+## App 1 – Basic layout and data processing
 #### Passing data between activities and changing background image
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/0438ed4e-bea2-4178-9a23-edafc86042db" width="25%" height="25%"/>
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/15cac6cf-94e4-492c-84e9-83621f1b03b0" width="25%" height="25%"/>
 
-# App 2 – Calculator
+## App 2 – Calculator
 #### Nothing to explain. Includes negative numbers, decimals and square root
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/5d8cdf37-cbb8-4029-968c-aaa822af0380" width="25%" height="25%"/>
 
-# App 3 - Converter
+## App 3 - Converter
 #### Enter a number and instantly convert it to other measures. Allows switching between languages using string resources
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/dd87ca8d-2e7c-4495-a5cb-b7750ff97b85" width="25%" height="25%"/>
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/ec55161f-1ca4-4429-8b81-4361ff634e72" width="25%" height="25%"/>
 
-# App 4 - Notes app
+## App 4 - Notes app
 #### Notes app allowing to differentiate them with tags. CRUD for both of them
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/df145a4c-90e9-48fc-9f3f-63ea630813fe" width="24%" height="24%"/>
@@ -25,7 +25,7 @@
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/21dd945c-5ede-4002-b5c8-fe51536be2ad" width="24%" height="24%"/>
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/0d08f2bc-3e3b-4620-9980-4ed3452733f6" width="24%" height="24%"/>
 
-# App 5 – All in one app
+## App 5 – All in one app
 #### Singing up/in, editable profile info including picture (select or take). Able to browse desired city's weather via geo api and listen to music using MediaPlayer service
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/25f179f5-8f28-4161-b166-b0e7976cfcf5" width="24%" height="24%"/>
@@ -39,13 +39,13 @@
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/f8daec49-b5dd-4272-9560-3bd085931099" width="24%" height="24%"/>
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/ad776acc-fbd1-4c0d-8201-2affcb3626e3" width="24%" height="24%"/>
 
-# App 6 – Flutter Pedometer
+## App 6 – Flutter Pedometer
 #### Display number of steps and current movement status using device's health data
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/6413487e-b338-43bd-845f-1fccad425bb5" width="25%" height="25%"/>
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/de387720-bc17-442b-821c-9ade3a99403e" width="25%" height="25%"/>
 
-# App 7 – Flutter Store
+## App 7 – Flutter Store
 #### Flutter + Firebase Auth and Firestore based e-commerce online store
 
 <img src="https://github.com/troublecatcher/mobile/assets/91335963/231f270a-473f-4d38-8ae5-5f3fca37b0db" width="25%" height="25%"/>
